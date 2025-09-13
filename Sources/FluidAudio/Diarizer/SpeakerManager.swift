@@ -22,17 +22,20 @@ public class SpeakerManager {
     public var embeddingThreshold: Float  // Max distance for updating embeddings (default: 0.45)
     public var minSpeechDuration: Float  // Min duration to create speaker (default: 1.0)
     public var minEmbeddingUpdateDuration: Float  // Min duration to update embeddings (default: 2.0)
+    public var maxSpeakers: Int  // Max number of speakers allowed (-1 for unlimited)
 
     public init(
         speakerThreshold: Float = 0.65,
         embeddingThreshold: Float = 0.45,
         minSpeechDuration: Float = 1.0,
-        minEmbeddingUpdateDuration: Float = 2.0
+        minEmbeddingUpdateDuration: Float = 2.0,
+        maxSpeakers: Int = -1
     ) {
         self.speakerThreshold = speakerThreshold
         self.embeddingThreshold = embeddingThreshold
         self.minSpeechDuration = minSpeechDuration
         self.minEmbeddingUpdateDuration = minEmbeddingUpdateDuration
+        self.maxSpeakers = maxSpeakers
     }
 
     public func initializeKnownSpeakers(_ speakers: [Speaker]) {
@@ -94,8 +97,20 @@ public class SpeakerManager {
                 return nil
             }
 
-            // Step 3: Create new speaker if duration is sufficient
+            // Step 3: Create new speaker if duration is sufficient and max speakers not reached
             if speechDuration >= minSpeechDuration {
+                // Check if we've reached the maximum number of speakers
+                if maxSpeakers > 0 && speakerDatabase.count >= maxSpeakers {
+                    logger.debug("Maximum number of speakers (\(maxSpeakers)) reached, assigning to closest existing speaker")
+                    // Force assignment to closest existing speaker if we have any
+                    if let speakerId = closestSpeaker {
+                        if let speaker = speakerDatabase[speakerId] {
+                            return speaker
+                        }
+                    }
+                    return nil
+                }
+                
                 let newSpeakerId = createNewSpeaker(
                     embedding: embedding,
                     duration: speechDuration,

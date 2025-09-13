@@ -32,7 +32,8 @@ public final class DiarizerManager {
             // More aggressive (lower threshold) to update embeddings with high-confidence matches
             embeddingThreshold: config.clusteringThreshold * 0.8,
             minSpeechDuration: config.minSpeechDuration,
-            minEmbeddingUpdateDuration: config.minEmbeddingUpdateDuration
+            minEmbeddingUpdateDuration: config.minEmbeddingUpdateDuration,
+            maxSpeakers: config.maxSpeakers
         )
     }
 

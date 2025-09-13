@@ -19,6 +19,9 @@ public struct DiarizerConfig: Sendable {
 
     /// Expected number of speakers (-1 for automatic).
     public var numClusters: Int = -1
+    
+    /// Maximum number of speakers allowed (-1 for unlimited).
+    public var maxSpeakers: Int = -1
 
     /// Minimum active frames for valid speech detection.
     public var minActiveFramesCount: Float = 10.0
@@ -40,6 +43,7 @@ public struct DiarizerConfig: Sendable {
         minEmbeddingUpdateDuration: Float = 2.0,
         minSilenceGap: Float = 0.5,
         numClusters: Int = -1,
+        maxSpeakers: Int = -1,
         minActiveFramesCount: Float = 10.0,
         debugMode: Bool = false,
         chunkDuration: Float = 10.0,
@@ -50,6 +54,7 @@ public struct DiarizerConfig: Sendable {
         self.minEmbeddingUpdateDuration = minEmbeddingUpdateDuration
         self.minSilenceGap = minSilenceGap
         self.numClusters = numClusters
+        self.maxSpeakers = maxSpeakers
         self.minActiveFramesCount = minActiveFramesCount
         self.debugMode = debugMode
         self.chunkDuration = chunkDuration

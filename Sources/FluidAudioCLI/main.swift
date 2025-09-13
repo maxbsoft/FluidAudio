@@ -14,6 +14,7 @@ func printUsage() {
 
         Commands:
             process                 Process a single audio file for diarization
+            process-with-config     Process with custom config (supports --num-clusters)
             diarization-benchmark   Run diarization benchmark
             vad-benchmark           Run VAD-specific benchmark
             asr-benchmark           Run ASR benchmark on LibriSpeech
@@ -101,6 +102,8 @@ Task {
         }
     case "process":
         await ProcessCommand.run(arguments: Array(arguments.dropFirst(2)))
+    case "process-with-config":
+        await ProcessWithConfigCommand.run(arguments: Array(arguments.dropFirst(2)))
     case "download":
         await DownloadCommand.run(arguments: Array(arguments.dropFirst(2)))
     case "help", "--help", "-h":
